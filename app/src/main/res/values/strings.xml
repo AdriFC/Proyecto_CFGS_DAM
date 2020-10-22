@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Weather Compare</string>
+    <string name="button_login">Login</string>
+    <string name="button_register">Regístrate</string>
+    <string name="TextRegistro">Regístrate!</string>
+    <string name="button_register2">Regístrame!</string>
+    <string name="Int_name">Introduce tu nombre</string>
+    <string name="Int_email">Introduce tu email</string>
+    <string name="Int_password">Introduce tu password</string>
+    <string name="toast_registro">Vas a registrarte!</string>
 </resources>
