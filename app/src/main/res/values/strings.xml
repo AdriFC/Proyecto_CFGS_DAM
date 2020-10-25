@@ -8,4 +8,7 @@
     <string name="Int_email">Introduce tu email</string>
     <string name="Int_password">Introduce tu password</string>
     <string name="toast_registro">Vas a registrarte!</string>
+    <string name="TextLogin">Accede con tus datos de usuario!</string>
+    <string name="button_login2">Login!</string>
+    <string name="toast_login">Vas a loguearte!</string>
 </resources>
