@@ -17,7 +17,7 @@ public class Usuario {
         this.historial = historial;
     }
 
-    //Getters & setters
+    //Getters, setters & toString
     public int getId() {
         return id;
     }
@@ -58,5 +58,14 @@ public class Usuario {
         this.historial = historial;
     }
 
-
+    @Override
+    public String toString() {
+        return "Usuario{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", email='" + email + '\'' +
+                ", contraseña='" + contraseña + '\'' +
+                ", historial='" + historial + '\'' +
+                '}';
+    }
 }

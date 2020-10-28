@@ -60,10 +60,21 @@ public class BaseDeDatos extends SQLiteOpenHelper {
         String query = "SELECT * FROM usuario";
         Cursor cursor = lectura.rawQuery (query, null);
         cursor.moveToFirst();
+        List<Usuario> usuario = new ArrayList<>();
 
         do{
-            System.out.println("Nombre de usuario: " + cursor.getString(1));
+            //System.out.println("Nombre de usuario: " + cursor.getString(1));
+            usuario.add(new Usuario (
+                                    cursor.getInt(0),
+                                    cursor.getString(1),
+                                    cursor.getString(2),
+                                    cursor.getString(3),
+                                    ""));
         } while (cursor.moveToNext());
+        Iterator iterator = usuario.iterator();
+        while(iterator.hasNext()){
+            System.out.println(iterator.next().toString());
+        }
         lectura.close();
     }
 }
