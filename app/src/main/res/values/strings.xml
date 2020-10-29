@@ -11,4 +11,8 @@
     <string name="TextLogin">Accede con tus datos de usuario!</string>
     <string name="button_login2">Login!</string>
     <string name="toast_login">Vas a loguearte!</string>
+    <string name="toast_loginValido">Inicio de sesión correcto</string>
+    <string name="toast_loginInvalido">Datos incorrectos</string>
+    <string name="toast_registroExito">Usuario registrado con éxito</string>
+    <string name="toast_registroFallido">Error en el registro</string>
 </resources>

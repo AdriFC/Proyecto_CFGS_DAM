@@ -42,12 +42,29 @@ public class BaseDeDatos extends SQLiteOpenHelper {
     }
 
     //Función para insertar datos en la BBDD
-    public void insertData (String nombre, String email, String contraseña){
-        SQLiteDatabase escritura = getWritableDatabase();
+    public boolean insertData (String nombre, String email, String contraseña){
+        SQLiteDatabase db = getWritableDatabase();
+
+        //Comprobar que el email no ha sido registrado todavía en la base de datos
+        String checkEmail = "SELECT * FROM usuario WHERE email = \"" + email + "\"";
+        Cursor cursor = db.rawQuery (checkEmail, null);
+
+        if (cursor.getCount() != 0) // There is a user register
+        {
+            return false;
+        }
+
+        //Comprobar que el email es valido
+
+        //Comprobar que la contraseña es válida
+
+        //Insertar datos de usuario
         String insert = "INSERT INTO usuario (nombre, email, contraseña) " +
                 "VALUES (\""+ nombre +"\" , \""+ email + "\" , \""+ contraseña + "\" );";
-        escritura.execSQL(insert);
-        escritura.close();
+        db.execSQL(insert);
+        db.close();
+
+        return true;
     }
 
     /*
@@ -68,13 +85,43 @@ public class BaseDeDatos extends SQLiteOpenHelper {
                                     cursor.getInt(0),
                                     cursor.getString(1),
                                     cursor.getString(2),
-                                    cursor.getString(3),
-                                    ""));
+                                    cursor.getString(3)));
         } while (cursor.moveToNext());
         Iterator iterator = usuario.iterator();
         while(iterator.hasNext()){
             System.out.println(iterator.next().toString());
         }
         lectura.close();
+    }
+
+    public Usuario checkLogin(String email, String contraseña){
+        SQLiteDatabase lectura = getReadableDatabase();
+        String query = "SELECT * FROM usuario WHERE email = "
+                + "\"" + email + "\""
+                + " AND contraseña = "
+                + "\"" + contraseña + "\"" ;
+
+        System.out.println(query);
+
+        Cursor cursor = lectura.rawQuery (query, null);
+
+        Usuario usuario;
+        if (cursor.getCount() == 1) // There is a user register
+        {
+            cursor.moveToFirst();
+            usuario = new Usuario(
+                    cursor.getInt(0),
+                    cursor.getString(1),
+                    cursor.getString(2),
+                    cursor.getString(3));
+        }
+        else
+        {
+            usuario = new Usuario();
+        }
+
+        lectura.close();
+
+        return usuario;
     }
 }

@@ -7,10 +7,26 @@ public class Usuario {
     private String nombre;
     private String email;
     private String contraseña;
-    private String historial;
+    private Historial historial;
 
-    //Constructor con parámetros
-    public Usuario(int id, String nombre, String email, String contraseña, String historial) {
+    //Constructores
+    public Usuario()
+    {
+        this.id = 0;
+        this.nombre = "";
+        this.email = "";
+        this.contraseña = "";
+        this.historial = new Historial();
+    }
+    public Usuario(int id, String nombre, String email, String contraseña) {
+        this.id = id;
+        this.nombre = nombre;
+        this.email = email;
+        this.contraseña = contraseña;
+        this.historial = new Historial();
+    }
+    public Usuario(int id, String nombre, String email, String contraseña, Historial historial) {
+        this.id = id;
         this.nombre = nombre;
         this.email = email;
         this.contraseña = contraseña;
@@ -50,11 +66,11 @@ public class Usuario {
         this.contraseña = contraseña;
     }
 
-    public String getHistorial() {
+    public Historial getHistorial() {
         return historial;
     }
 
-    public void setHistorial(String historial) {
+    public void setHistorial(Historial historial) {
         this.historial = historial;
     }
 
@@ -65,7 +81,7 @@ public class Usuario {
                 ", nombre='" + nombre + '\'' +
                 ", email='" + email + '\'' +
                 ", contraseña='" + contraseña + '\'' +
-                ", historial='" + historial + '\'' +
+                ", historial='" + historial.toString() + '\'' +
                 '}';
     }
 }

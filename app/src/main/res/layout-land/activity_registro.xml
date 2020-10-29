@@ -52,7 +52,7 @@
         app:layout_constraintVertical_bias="0.16000003" />
 
     <EditText
-        android:id="@+id/editTextTextREmail"
+        android:id="@+id/editTextLEmail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -67,7 +67,7 @@
         app:layout_constraintVertical_bias="0.120000005" />
 
     <EditText
-        android:id="@+id/editTextRPassword"
+        android:id="@+id/editTextLPassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
@@ -78,11 +78,11 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextREmail"
+        app:layout_constraintTop_toBottomOf="@+id/editTextLEmail"
         app:layout_constraintVertical_bias="0.16000003" />
 
     <Button
-        android:id="@+id/button_register2"
+        android:id="@+id/button_login2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="150dp"
@@ -93,6 +93,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toBottomOf="@+id/editTextRPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextLPassword" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
