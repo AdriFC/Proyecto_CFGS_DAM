@@ -2,6 +2,7 @@ package com.example.weathercompare;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -42,6 +43,9 @@ public class Login extends AppCompatActivity {
         }
         else {
             Toast.makeText(this,(R.string.toast_loginValido),Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, UsuarioActivity.class);
+            //intent.putExtra(usuario);
+            startActivity(intent);
         }
     }
 }

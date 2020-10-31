@@ -14,5 +14,9 @@
     <string name="toast_loginValido">Inicio de sesión correcto</string>
     <string name="toast_loginInvalido">Datos incorrectos</string>
     <string name="toast_registroExito">Usuario registrado con éxito</string>
-    <string name="toast_registroFallido">Error en el registro</string>
+    <string name="toast_emailIncorrecto">Debes de introducir un email válido \"ejemplo@gmail.com\"</string>
+    <string name="toast_passwordIncorrecto">Introduce una contraseña con al menos 8 caracteres alfa numéricos y alguna mayúscula</string>
+    <string name="button_comparativa">Hacer comparativa</string>
+    <string name="button_historial">Revisa tu historial</string>
+    <string name="TextBienvenida">Bienvenid@</string>
 </resources>
