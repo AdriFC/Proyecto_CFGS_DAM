@@ -44,10 +44,15 @@ public class Registro extends AppCompatActivity {
         BaseDeDatos bd = new BaseDeDatos(this, "android", null, 1);
         if(validarEmail(email.getText().toString())) {
             if(validarContrasenia(contraseña.getText().toString())){
+
                 //Insección de usuario en la base de datos
-                bd.insertData(nombre.getText().toString(), email.getText().toString(), contraseña.getText().toString());
-                Toast.makeText(this, (R.string.toast_registroExito), Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(Registro.this, Login.class));
+                if(bd.insertData(nombre.getText().toString(), email.getText().toString(), contraseña.getText().toString()) == true){
+                    Toast.makeText(this, (R.string.toast_registroExito), Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(Registro.this, Login.class));
+                }else{
+                    Toast.makeText(this,(R.string.toast_EmailExistente), Toast.LENGTH_SHORT).show();
+                }
+
             }else{
                 Toast.makeText(this,(R.string.toast_passwordIncorrecto),Toast.LENGTH_LONG).show();
             }
@@ -55,11 +60,7 @@ public class Registro extends AppCompatActivity {
         else {
             Toast.makeText(this,(R.string.toast_emailIncorrecto),Toast.LENGTH_LONG).show();
         }
-
-
         //bd.getData();
-
-
     }
 
     //Función para validar el email

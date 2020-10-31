@@ -1,6 +1,10 @@
 package com.example.weathercompare;
 
-public class Usuario {
+import android.os.Parcelable;
+
+import java.io.Serializable;
+
+public class Usuario implements Serializable {
 
     //Atributos
     private int id;

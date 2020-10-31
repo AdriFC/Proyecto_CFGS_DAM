@@ -47,16 +47,16 @@ public class BaseDeDatos extends SQLiteOpenHelper {
 
         //Comprobar que el email no ha sido registrado todavía en la base de datos
         String checkEmail = "SELECT * FROM usuario WHERE email = \"" + email + "\"";
+        System.out.println(checkEmail);
         Cursor cursor = db.rawQuery (checkEmail, null);
+        System.out.println("Número de emails: " + cursor.getCount());
 
         if (cursor.getCount() != 0) // There is a user register
         {
             return false;
         }
 
-        //Comprobar que el email es valido
 
-        //Comprobar que la contraseña es válida
 
         //Insertar datos de usuario
         String insert = "INSERT INTO usuario (nombre, email, contraseña) " +

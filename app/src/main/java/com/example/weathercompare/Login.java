@@ -10,7 +10,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 public class Login extends AppCompatActivity {
-
+    //Atributos
     EditText email;
     EditText contraseña;
     Button login;
@@ -32,6 +32,7 @@ public class Login extends AppCompatActivity {
         });
     }
 
+    //Función que realiza el login
     private void loginUser() {
         BaseDeDatos bd = new BaseDeDatos(this, "android", null, 1);
 
@@ -44,8 +45,12 @@ public class Login extends AppCompatActivity {
         else {
             Toast.makeText(this,(R.string.toast_loginValido),Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(this, UsuarioActivity.class);
-            //intent.putExtra(usuario);
+            intent.putExtra("usuario",usuario);
             startActivity(intent);
+
+            /*Intent intent = new Intent(Activity_Origen.this, Activity_Destino.class);
+            intent.putExtra("parametro", "string");
+            startActivity(intent);*/
         }
     }
 }

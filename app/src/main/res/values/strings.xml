@@ -19,4 +19,5 @@
     <string name="button_comparativa">Hacer comparativa</string>
     <string name="button_historial">Revisa tu historial</string>
     <string name="TextBienvenida">Bienvenid@</string>
+    <string name="toast_EmailExistente">Email de usuario ya registrado</string>
 </resources>

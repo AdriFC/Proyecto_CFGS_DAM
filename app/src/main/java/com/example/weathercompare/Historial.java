@@ -1,9 +1,10 @@
 package com.example.weathercompare;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Historial {
+public class Historial implements Serializable {
 
     private List<Comparacion> historial;
 
