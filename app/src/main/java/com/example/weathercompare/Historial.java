@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Historial implements Serializable {
-
+    //Atributo
     private List<Comparacion> historial;
 
     public Historial() {
@@ -23,6 +23,7 @@ public class Historial implements Serializable {
         this.historial = historial;
     }
 
+    //ToString
     @Override
     public String toString() {
         return "Historial TBD";

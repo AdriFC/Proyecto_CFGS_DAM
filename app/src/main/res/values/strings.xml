@@ -20,4 +20,6 @@
     <string name="button_historial">Revisa tu historial</string>
     <string name="TextBienvenida">Bienvenid@</string>
     <string name="toast_EmailExistente">Email de usuario ya registrado</string>
+    <string name="button_logout">Logout</string>
+    <string name="toast_logout">Sesión cerrada</string>
 </resources>

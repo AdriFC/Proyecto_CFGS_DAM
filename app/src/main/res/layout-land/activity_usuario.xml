@@ -30,7 +30,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/logo"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.35000002" />
 
     <Button
         android:id="@+id/button_historial"
@@ -43,9 +44,24 @@
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/logo"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.75" />
+        app:layout_constraintVertical_bias="0.6" />
+
+    <Button
+        android:id="@+id/button_logout"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="200dp"
+        android:layout_marginEnd="100dp"
+        android:background="@drawable/button_design"
+        android:text="@string/button_logout"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/logo"
+        app:layout_constraintTop_toBottomOf="@+id/button_historial" />
 
     <TextView
         android:id="@+id/Bienvenida"
