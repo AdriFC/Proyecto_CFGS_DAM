@@ -14,11 +14,23 @@ public class UsuarioActivity extends AppCompatActivity {
     //Atributos
     TextView bienvenida;
     Button buttonLogout;
+    Button buttonComparar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_usuario);
+
+        buttonComparar = findViewById(R.id.button_conparacion);
+        buttonComparar.setOnClickListener(new View.OnClickListener() {      //Asocio la función login al listener del botón
+            @Override
+            public void onClick(View v) {
+                funcionApi (v);
+            }
+        });
+
+
+
 
         //Paso del objeto usuario desde la clase login
         Usuario usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
@@ -41,6 +53,12 @@ public class UsuarioActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    //Función que se ejecuta al pulsar el botón de comparar!
+    public void funcionApi (View v){
+        Toast.makeText(UsuarioActivity.this,"prueba",Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(UsuarioActivity.this, ComparacionActivity.class));
     }
 
 
