@@ -22,4 +22,8 @@
     <string name="toast_EmailExistente">Email de usuario ya registrado</string>
     <string name="button_logout">Logout</string>
     <string name="toast_logout">Sesión cerrada</string>
+    <string name="TextComparacion">Busca las localidades</string>
+    <string name="TextBusqueda1">Busqueda 1</string>
+    <string name="TextBusqueda2">Busqueda 2</string>
+    <string name="button_comparativa2">Compara el clima!</string>
 </resources>
