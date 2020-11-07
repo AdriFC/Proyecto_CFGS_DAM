@@ -5,8 +5,8 @@ public class Model200 {
     //Atributos
     private String descripcion;
     private int estado;
-    private  String datos;
-    private String metadatos;
+    /*private  String datos;
+    private String metadatos;*/
 
     //Getters & Setters
     public String getDescripcion() {
@@ -25,7 +25,7 @@ public class Model200 {
         this.estado = estado;
     }
 
-    public String getDatos() {
+ /*   public String getDatos() {
         return datos;
     }
 
@@ -39,7 +39,7 @@ public class Model200 {
 
     public void setMetadatos(String metadatos) {
         this.metadatos = metadatos;
-    }
+    }*/
 
     //toString
 
@@ -48,8 +48,8 @@ public class Model200 {
         return "Model200{" +
                 "descripcion='" + descripcion + '\'' +
                 ", estado=" + estado +
-                ", datos='" + datos + '\'' +
-                ", metadatos='" + metadatos + '\'' +
+               /* ", datos='" + datos + '\'' +
+                ", metadatos='" + metadatos + '\'' +*/
                 '}';
     }
 }
