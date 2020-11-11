@@ -29,9 +29,6 @@ public class UsuarioActivity extends AppCompatActivity {
             }
         });
 
-
-
-
         //Paso del objeto usuario desde la clase login
         Usuario usuario = (Usuario) getIntent().getExtras().getSerializable("usuario");
 
@@ -58,7 +55,7 @@ public class UsuarioActivity extends AppCompatActivity {
     //Función que se ejecuta al pulsar el botón de comparar!
     public void funcionApi (View v){
         Toast.makeText(UsuarioActivity.this,"prueba",Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(UsuarioActivity.this, Comparacion_activity.class));
+        startActivity(new Intent(UsuarioActivity.this, ResultadoComparacionActivity.class));
     }
 
 
