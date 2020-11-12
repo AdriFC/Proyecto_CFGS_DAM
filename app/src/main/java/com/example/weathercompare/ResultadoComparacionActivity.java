@@ -5,12 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import java.io.IOException;
 import java.util.List;
 
 import Interface.JsonPlaceHolderApi;
 import Modelo.Model200;
 import Modelo.PrediccionMunicipio;
+import Modelo.PrediccionMunicipio_old;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -91,7 +91,7 @@ public class ResultadoComparacionActivity extends AppCompatActivity {
                 }
 
                 List<PrediccionMunicipio> prediccionMunicipioList = response.body();
-                for (PrediccionMunicipio prediccionMunicipio: prediccionMunicipioList) {
+                for (PrediccionMunicipio prediccionMunicipio : prediccionMunicipioList) {
                     String content = "";
                     content += prediccionMunicipio.toString() + "\n\n";
                     myJsonTextView.append(content);

@@ -6,13 +6,25 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import Interface.JsonPlaceHolderApi;
+import Modelo.Model200;
+import Modelo.Prediccion;
+import Modelo.PrediccionMunicipio;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Comparacion_activity extends AppCompatActivity {
 
@@ -21,7 +33,13 @@ public class Comparacion_activity extends AppCompatActivity {
     Spinner spinnerLocalidad1;
     Spinner spinnerProvincia2;
     Spinner spinnerLocalidad2;
+    Button buttonCompara;
+    String baseUrl = "https://opendata.aemet.es/";
 
+    PrediccionMunicipio prediccion1;
+    PrediccionMunicipio prediccion2;
+    boolean pred1rx;
+    boolean pred2rx;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -195,6 +213,149 @@ public class Comparacion_activity extends AppCompatActivity {
                 // Another interface callback
             }
         });
+
+        buttonCompara = findViewById(R.id.button);                     //Asocio el objeto botón de comparar con el botón del layout
+        buttonCompara.setOnClickListener(new View.OnClickListener() {  //Asocio la función hacerComparacion al listener del botón
+            @Override
+            public void onClick(View v) {
+                hacerComparacion (36036,36040);
+            }
+        });
+
+
+    }
+
+    private void hacerComparacion(int cod1, int cod2){
+        getModel200(cod1, 1);
+        getModel200(cod2, 2);
+    }
+
+    private void getModel200(int cod, final int index)
+    {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        //Se llama a la interfaz
+        JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+        String url = "opendata/api/prediccion/especifica/municipio/diaria/" + cod + "/?api_key=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZHJpODZ2aWdvQGdtYWlsLmNvbSIsImp0aSI6IjJkNzgzYjhhLTFjMTUtNGJjNS04ZmJkLTMwZmY4NWM2NWUyNSIsImlzcyI6IkFFTUVUIiwiaWF0IjoxNjAzMDE5NTg0LCJ1c2VySWQiOiIyZDc4M2I4YS0xYzE1LTRiYzUtOGZiZC0zMGZmODVjNjVlMjUiLCJyb2xlIjoiIn0.a1IIOmDUM1FI6neNmgLeT728iLAKa26mxia-Oe5sOWs";
+
+        Call<Model200> call = jsonPlaceHolderApi.getModel200(url);
+        /*try {
+            Model200 model200 = call.execute().body();
+            if(index == 1) {
+                System.out.println("Recibido prediccion 1");
+                prediccion1 = getPrediction(model200, index);
+                pred1rx = true;
+
+            } else {
+                System.out.println("Recibido prediccion 2");
+                prediccion2 = getPrediction(model200, index);
+                pred2rx = true;
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }*/
+
+        call.enqueue(new Callback<Model200>() {
+            @Override
+            public void onResponse(Call<Model200> call, Response<Model200> response) {
+                if(!response.isSuccessful()){
+
+                    System.out.println("Operacion 1 Incorrecta");
+                    //myJsonTextView.setText("código: " + response.code());
+                    return;
+                }
+
+                getPrediction(response.body(), index);
+            }
+
+            @Override
+            public void onFailure(Call<Model200> call, Throwable t) {
+
+            }
+        });
+    }
+
+    //Método para traer los datos
+    private void getPrediction(Model200 model200, final int index){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(baseUrl)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+
+        String url2 = model200.getDatos();
+        //System.out.println(url2);
+        url2 = url2.replace(baseUrl,"");
+        //System.out.println(url2);
+
+        System.out.println("Lanzando prediccion" + index);
+        Call<List<PrediccionMunicipio>> callPrediccion = jsonPlaceHolderApi.getPrediccion(url2);
+        /*List<PrediccionMunicipio> prediccionMunicipioList = new ArrayList<PrediccionMunicipio>();
+        try {
+            prediccionMunicipioList = callPrediccion.execute().body();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return prediccionMunicipioList.get(0);*/
+
+        callPrediccion.enqueue(new Callback<List<PrediccionMunicipio>>() {
+            @Override
+            public void onResponse(Call<List<PrediccionMunicipio>> call, Response<List<PrediccionMunicipio>> response) {
+                if(!response.isSuccessful()){
+
+                    System.out.println("Operacion Incorrecta");
+                    //myJsonTextView.setText("código: " + response.code());
+                    return;
+                }
+
+                List<PrediccionMunicipio> prediccionMunicipioList = response.body();
+                PrediccionMunicipio prediccion = prediccionMunicipioList.get(0);
+
+                if(index == 1) {
+                    System.out.println("Recibido prediccion 1");
+                    comprobarRecepcion(prediccion, index);
+
+                } else {
+                    System.out.println("Recibido prediccion 2");
+                    comprobarRecepcion(prediccion, index);
+                }
+
+                /*for (PrediccionMunicipio prediccionMunicipio : prediccionMunicipioList) {
+                    String content = "";
+                    content += prediccionMunicipio.toString() + "\n\n";
+                    //myJsonTextView.append(content);
+                }*/
+            }
+
+            @Override
+            public void onFailure(Call<List<PrediccionMunicipio>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    private void comprobarRecepcion(PrediccionMunicipio prediccionMunicipio, int index){
+        if(index == 1) {
+            pred1rx = true;
+            prediccion1 = prediccionMunicipio;
+
+            if(pred2rx == true) { // Ambas recepciones terminadas
+                System.out.println("Comparacion terminada");
+            }
+
+        } else {
+            pred2rx = true;
+            prediccion2 = prediccionMunicipio;
+
+            if (pred1rx == true) { // Ambas recepciones terminadas
+                System.out.println("Comparacion terminada");
+            }
+        }
     }
 }
 

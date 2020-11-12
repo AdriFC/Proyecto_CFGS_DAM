@@ -5,7 +5,7 @@ import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Temperatura {
+public class HumedadRelativa {
 
     @SerializedName("maxima")
     @Expose
@@ -43,7 +43,7 @@ public class Temperatura {
 
     @Override
     public String toString() {
-        return "Temperatura{" +
+        return "HumedadRelativa{" +
                 "maxima=" + maxima +
                 ", minima=" + minima +
                 ", dato=" + dato +
