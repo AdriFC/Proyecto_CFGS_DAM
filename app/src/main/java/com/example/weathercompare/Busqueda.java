@@ -13,11 +13,11 @@ public class Busqueda {
     private float vientoMedia;
     private float vientoRacha;
     private float precipitaciones;
-    private int sol;
+    private String estadoCielo;
 
 
     //Constructor
-    public Busqueda(int id, String ubicacion, Date fecha, float tempMin, float tempMax, float tempMedia, float vientoMedia, float vientoRacha, float precipitaciones, int sol) {
+    public Busqueda(int id, String ubicacion, Date fecha, float tempMin, float tempMax, float tempMedia, float vientoMedia, float vientoRacha, float precipitaciones, String estadoCielo) {
         this.id = id;
         this.ubicacion = ubicacion;
         this.fecha = fecha;
@@ -27,7 +27,7 @@ public class Busqueda {
         this.vientoMedia = vientoMedia;
         this.vientoRacha = vientoRacha;
         this.precipitaciones = precipitaciones;
-        this.sol = sol;
+        this.estadoCielo = estadoCielo;
     }
 
     //Constructor vacío
@@ -41,7 +41,7 @@ public class Busqueda {
         this.vientoMedia = 0;
         this.vientoRacha = 0;
         this.precipitaciones = 0;
-        this.sol = 0;
+        this.estadoCielo = "";
     }
 
     //Getters&Setters
@@ -117,12 +117,12 @@ public class Busqueda {
         this.precipitaciones = precipitaciones;
     }
 
-    public int getSol() {
-        return sol;
+    public String getEstadoCielo() {
+        return estadoCielo;
     }
 
-    public void setSol(int sol) {
-        this.sol = sol;
+    public void setEstadoCielo(String estadoCielo) {
+        this.estadoCielo = estadoCielo;
     }
 
     //ToString
@@ -138,7 +138,7 @@ public class Busqueda {
                 ", vientoMedia=" + vientoMedia +
                 ", vientoRacha=" + vientoRacha +
                 ", precipitaciones=" + precipitaciones +
-                ", sol=" + sol +
+                ", estadoCielo=" + estadoCielo +
                 '}';
     }
 }

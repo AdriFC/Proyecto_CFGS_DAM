@@ -29,4 +29,12 @@
     <string name="TextSelectProv">Selecciona una provincia</string>
     <string name="TextSelectMun">Selecciona un municipio</string>
     <string name="TextErrorCodProv">Error al obtener código de provincia</string>
+    <string name="TextResultadoComparacion">Resultado de la comparación</string>
+    <string name="TextTempMax">Temp Max</string>
+    <string name="TextTempMin">Temp min</string>
+    <string name="TextTempMed">Temp med</string>
+    <string name="TextVRacha">Viencho racha</string>
+    <string name="TextVMed">Viento media</string>
+    <string name="TextPrec">% Precipitación</string>
+    <string name="TextEstadoCielo">Estado cielo</string>
 </resources>
