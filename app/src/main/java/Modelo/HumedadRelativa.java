@@ -1,11 +1,12 @@
 
 package Modelo;
 
+import java.io.Serializable;
 import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class HumedadRelativa {
+public class HumedadRelativa implements Serializable {
 
     @SerializedName("maxima")
     @Expose

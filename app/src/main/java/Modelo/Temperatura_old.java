@@ -1,6 +1,8 @@
 package Modelo;
 
-public class Temperatura_old {
+import java.io.Serializable;
+
+public class Temperatura_old implements Serializable {
 
     //Atributos
     private int maxima;

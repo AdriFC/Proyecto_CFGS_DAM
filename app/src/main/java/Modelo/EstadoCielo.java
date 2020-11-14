@@ -4,7 +4,9 @@ package Modelo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class EstadoCielo {
+import java.io.Serializable;
+
+public class EstadoCielo implements Serializable {
 
     @SerializedName("value")
     @Expose

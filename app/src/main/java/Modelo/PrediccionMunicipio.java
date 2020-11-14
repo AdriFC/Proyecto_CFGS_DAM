@@ -4,7 +4,9 @@ package Modelo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class PrediccionMunicipio {
+import java.io.Serializable;
+
+public class PrediccionMunicipio implements Serializable {
 
     @SerializedName("origen")
     @Expose

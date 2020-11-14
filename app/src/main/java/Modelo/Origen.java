@@ -4,7 +4,9 @@ package Modelo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Origen {
+import java.io.Serializable;
+
+public class Origen implements Serializable {
 
     @SerializedName("productor")
     @Expose

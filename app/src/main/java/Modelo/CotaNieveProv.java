@@ -4,7 +4,9 @@ package Modelo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CotaNieveProv {
+import java.io.Serializable;
+
+public class CotaNieveProv implements Serializable {
 
     @SerializedName("value")
     @Expose

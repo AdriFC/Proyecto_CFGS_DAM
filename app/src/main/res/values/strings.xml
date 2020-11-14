@@ -26,4 +26,7 @@
     <string name="TextBusqueda1">Busqueda 1</string>
     <string name="TextBusqueda2">Busqueda 2</string>
     <string name="button_comparativa2">Compara el clima!</string>
+    <string name="TextSelectProv">Selecciona una provincia</string>
+    <string name="TextSelectMun">Selecciona un municipio</string>
+    <string name="TextErrorCodProv">Error al obtener código de provincia</string>
 </resources>

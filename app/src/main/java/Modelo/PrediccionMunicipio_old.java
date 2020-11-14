@@ -1,6 +1,8 @@
 package Modelo;
 
-public class PrediccionMunicipio_old {
+import java.io.Serializable;
+
+public class PrediccionMunicipio_old implements Serializable {
 
     //private Temperatura temperatura;
     private String nombre;

@@ -1,11 +1,14 @@
 package Modelo;
+
+import java.io.Serializable;
+
 //Clase para almacenar el resultado de la petición principal
-public class Model200 {
+public class Model200 implements Serializable {
 
     //Atributos
     private String descripcion;
     private int estado;
-    private  String datos;
+    private String datos;
     private String metadatos;
 
     //Getters & Setters

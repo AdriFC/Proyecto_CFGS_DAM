@@ -25,7 +25,7 @@ public class UsuarioActivity extends AppCompatActivity {
         buttonComparar.setOnClickListener(new View.OnClickListener() {      //Asocio la función login al listener del botón
             @Override
             public void onClick(View v) {
-                funcionApi (v);
+                funcionComparar (v);
             }
         });
 
@@ -53,7 +53,7 @@ public class UsuarioActivity extends AppCompatActivity {
     }
 
     //Función que se ejecuta al pulsar el botón de comparar!
-    public void funcionApi (View v){
+    public void funcionComparar (View v){
         Toast.makeText(UsuarioActivity.this,"prueba",Toast.LENGTH_SHORT).show();
         startActivity(new Intent(UsuarioActivity.this, Comparacion_activity.class));
     }

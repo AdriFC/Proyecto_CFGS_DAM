@@ -4,7 +4,9 @@ package Modelo;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Viento {
+import java.io.Serializable;
+
+public class Viento implements Serializable {
 
     @SerializedName("direccion")
     @Expose

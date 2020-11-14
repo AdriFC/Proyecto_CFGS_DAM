@@ -2,6 +2,7 @@ package com.example.weathercompare;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,8 +36,8 @@ public class Comparacion_activity extends AppCompatActivity {
     Spinner spinnerProvincia2;
     Spinner spinnerLocalidad2;
     Button buttonCompara;
-    String baseUrl = "https://opendata.aemet.es/";
 
+    String baseUrl = "https://opendata.aemet.es/";
     PrediccionMunicipio prediccion1;
     PrediccionMunicipio prediccion2;
     boolean pred1rx;
@@ -218,11 +220,70 @@ public class Comparacion_activity extends AppCompatActivity {
         buttonCompara.setOnClickListener(new View.OnClickListener() {  //Asocio la función hacerComparacion al listener del botón
             @Override
             public void onClick(View v) {
-                hacerComparacion (36036,36040);
+                String provincia1 = "";
+                String provincia2 = "";
+                String localidad1 = "";
+                String localidad2 = "";
+
+                if(spinnerProvincia1.getSelectedItemPosition() != 0) { // Alguna provincia seleccionada
+                    provincia1 = spinnerProvincia1.getSelectedItem().toString();
+                    if(spinnerLocalidad1.getSelectedItemPosition() != 0) { //Alguna localidad seleccionada
+                        localidad1 = spinnerLocalidad1.getSelectedItem().toString();
+                    } else {
+                        Toast.makeText(Comparacion_activity.this,getString(R.string.TextSelectMun),Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                } else {
+                    Toast.makeText(Comparacion_activity.this, getString(R.string.TextSelectProv),Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(spinnerProvincia2.getSelectedItemPosition() != 0) { // Alguna provincia seleccionada
+                    provincia2 = spinnerProvincia2.getSelectedItem().toString();
+                    if(spinnerLocalidad2.getSelectedItemPosition() != 0) { //Alguna localidad seleccionada
+                        localidad2 = spinnerLocalidad2.getSelectedItem().toString();
+                    } else {
+                        Toast.makeText(Comparacion_activity.this,getString(R.string.TextSelectMun),Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                } else {
+                    Toast.makeText(Comparacion_activity.this,getString(R.string.TextSelectProv),Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                System.out.println("Localidades y provincias validas");
+                int cod1 = obtenerCodigoLocalidad(provincia1, localidad1);
+                int cod2 = obtenerCodigoLocalidad(provincia2, localidad2);
+
+                if(cod1 != -1 && cod2 != -1) {
+                    hacerComparacion (cod1,cod2);
+                } else{
+                    Toast.makeText(Comparacion_activity.this,getString(R.string.TextErrorCodProv),Toast.LENGTH_SHORT).show();
+                }
             }
         });
+    }
 
+    private int obtenerCodigoLocalidad(String provincia, String localidad){
+        int codigo = -1;
+        InputStream is = getResources().openRawResource(R.raw.codmunpro);
+        CSVFile csvFile = new CSVFile(is);
+        List<String[]> csvList = csvFile.read();
 
+        System.out.println(csvList.size());
+        for(String[] stringArray : csvList) {
+            //stringArray[1] y StringArray[2] forman el id
+            //stringArray[4] tiene el nombre de la localidad
+            //stringArray[5] tiene el nombre de la provincia
+            //System.out.println("¿" + stringArray[4] + " = " + localidad + "?" + (stringArray[4].equals(localidad)));
+            //System.out.println("¿" + stringArray[5] + " = " + provincia + "?" + (stringArray[5].equals(provincia)));
+            if(stringArray[4].equals(localidad) && stringArray[5].equals(provincia)) {
+                codigo = Integer.parseInt(stringArray[1]) * 1000 + Integer.parseInt(stringArray[2]);
+                //System.out.println("Codigo de " + localidad + ": " + codigo);
+                break;
+            }
+        }
+        return codigo;
     }
 
     private void hacerComparacion(int cod1, int cod2){
@@ -239,36 +300,18 @@ public class Comparacion_activity extends AppCompatActivity {
 
         //Se llama a la interfaz
         JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
-        String url = "opendata/api/prediccion/especifica/municipio/diaria/" + cod + "/?api_key=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZHJpODZ2aWdvQGdtYWlsLmNvbSIsImp0aSI6IjJkNzgzYjhhLTFjMTUtNGJjNS04ZmJkLTMwZmY4NWM2NWUyNSIsImlzcyI6IkFFTUVUIiwiaWF0IjoxNjAzMDE5NTg0LCJ1c2VySWQiOiIyZDc4M2I4YS0xYzE1LTRiYzUtOGZiZC0zMGZmODVjNjVlMjUiLCJyb2xlIjoiIn0.a1IIOmDUM1FI6neNmgLeT728iLAKa26mxia-Oe5sOWs";
+        String url = "opendata/api/prediccion/especifica/municipio/diaria/" +
+                String.format("%05d", cod) +
+                "/?api_key=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZHJpODZ2aWdvQGdtYWlsLmNvbSIsImp0aSI6IjJkNzgzYjhhLTFjMTUtNGJjNS04ZmJkLTMwZmY4NWM2NWUyNSIsImlzcyI6IkFFTUVUIiwiaWF0IjoxNjAzMDE5NTg0LCJ1c2VySWQiOiIyZDc4M2I4YS0xYzE1LTRiYzUtOGZiZC0zMGZmODVjNjVlMjUiLCJyb2xlIjoiIn0.a1IIOmDUM1FI6neNmgLeT728iLAKa26mxia-Oe5sOWs";
 
         Call<Model200> call = jsonPlaceHolderApi.getModel200(url);
-        /*try {
-            Model200 model200 = call.execute().body();
-            if(index == 1) {
-                System.out.println("Recibido prediccion 1");
-                prediccion1 = getPrediction(model200, index);
-                pred1rx = true;
-
-            } else {
-                System.out.println("Recibido prediccion 2");
-                prediccion2 = getPrediction(model200, index);
-                pred2rx = true;
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }*/
-
         call.enqueue(new Callback<Model200>() {
             @Override
             public void onResponse(Call<Model200> call, Response<Model200> response) {
                 if(!response.isSuccessful()){
-
                     System.out.println("Operacion 1 Incorrecta");
-                    //myJsonTextView.setText("código: " + response.code());
                     return;
                 }
-
                 getPrediction(response.body(), index);
             }
 
@@ -288,32 +331,21 @@ public class Comparacion_activity extends AppCompatActivity {
         JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
 
         String url2 = model200.getDatos();
-        //System.out.println(url2);
         url2 = url2.replace(baseUrl,"");
-        //System.out.println(url2);
 
         System.out.println("Lanzando prediccion" + index);
         Call<List<PrediccionMunicipio>> callPrediccion = jsonPlaceHolderApi.getPrediccion(url2);
-        /*List<PrediccionMunicipio> prediccionMunicipioList = new ArrayList<PrediccionMunicipio>();
-        try {
-            prediccionMunicipioList = callPrediccion.execute().body();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return prediccionMunicipioList.get(0);*/
 
         callPrediccion.enqueue(new Callback<List<PrediccionMunicipio>>() {
             @Override
             public void onResponse(Call<List<PrediccionMunicipio>> call, Response<List<PrediccionMunicipio>> response) {
                 if(!response.isSuccessful()){
-
                     System.out.println("Operacion Incorrecta");
-                    //myJsonTextView.setText("código: " + response.code());
                     return;
                 }
 
                 List<PrediccionMunicipio> prediccionMunicipioList = response.body();
+                //Esta peticion es en realidad una lista de un único elemento
                 PrediccionMunicipio prediccion = prediccionMunicipioList.get(0);
 
                 if(index == 1) {
@@ -324,12 +356,6 @@ public class Comparacion_activity extends AppCompatActivity {
                     System.out.println("Recibido prediccion 2");
                     comprobarRecepcion(prediccion, index);
                 }
-
-                /*for (PrediccionMunicipio prediccionMunicipio : prediccionMunicipioList) {
-                    String content = "";
-                    content += prediccionMunicipio.toString() + "\n\n";
-                    //myJsonTextView.append(content);
-                }*/
             }
 
             @Override
@@ -339,23 +365,34 @@ public class Comparacion_activity extends AppCompatActivity {
         });
     }
 
+    //Esta funcion me permite sincronizar las respuestas de las peticiones asincronas
+    //Comprueba cuando me llega una de las respuestas, si la otra tambien ha llegado
+    //En ese caso, ya puedo procesar la comparacion
     private void comprobarRecepcion(PrediccionMunicipio prediccionMunicipio, int index){
         if(index == 1) {
             pred1rx = true;
             prediccion1 = prediccionMunicipio;
-
             if(pred2rx == true) { // Ambas recepciones terminadas
-                System.out.println("Comparacion terminada");
+                procesarComparacion();
             }
 
         } else {
             pred2rx = true;
             prediccion2 = prediccionMunicipio;
-
             if (pred1rx == true) { // Ambas recepciones terminadas
-                System.out.println("Comparacion terminada");
+                procesarComparacion();
             }
         }
+    }
+
+    private void procesarComparacion(){
+        //Comparacion comparacion = new Comparacion();
+
+        Intent intent = new Intent(this, ResultadoComparacionActivity.class);
+        System.out.println("Provincia; " + prediccion1.getProvincia() + "Localidad: " + prediccion1.getNombre());
+        intent.putExtra("prediccionMunicipio1", prediccion1);
+        intent.putExtra("prediccionMunicipio2", prediccion2);
+        startActivity(intent);
     }
 }
 

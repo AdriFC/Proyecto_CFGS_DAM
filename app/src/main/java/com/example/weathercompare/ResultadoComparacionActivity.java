@@ -5,12 +5,17 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import Interface.JsonPlaceHolderApi;
 import Modelo.Model200;
 import Modelo.PrediccionMunicipio;
 import Modelo.PrediccionMunicipio_old;
+import Modelo.ProbPrecipitacion;
+import Modelo.Viento;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -21,8 +26,6 @@ public class ResultadoComparacionActivity extends AppCompatActivity {
 
     //Atributo del TextView para recibir la información
     private TextView myJsonTextView;
-    //private Model200 model200;
-    String baseUrl = "https://opendata.aemet.es/";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,77 +34,88 @@ public class ResultadoComparacionActivity extends AppCompatActivity {
 
         //Enlace del atributo con el textView del layout
         myJsonTextView = findViewById(R.id.JsonTextView);
-        getModel200();
+
+        //Paso del objeto prediccion desde la clase comparacion_activity
+        PrediccionMunicipio prediccion1 = (PrediccionMunicipio) getIntent().getExtras().getSerializable("prediccionMunicipio1");
+        PrediccionMunicipio prediccion2 = (PrediccionMunicipio) getIntent().getExtras().getSerializable("prediccionMunicipio2");
+        //String prediccionProvincia = (String) getIntent().getExtras().getSerializable("prediccionMunicipio");
+
+        myJsonTextView.append("Comparacion: " +
+                prediccion1.getProvincia() + "-" + prediccion1.getNombre() +
+                " vs " +
+                prediccion2.getProvincia() + "-" + prediccion2.getNombre() +
+                "\n");
+
+        //Obtencion de datos relevantes prediccion1
+        int tmax1 = prediccion1.getPrediccion().getDia().get(1).getTemperatura().getMaxima();
+        int tmin1 = prediccion1.getPrediccion().getDia().get(1).getTemperatura().getMinima();
+        int probPrec1 = getProbPrecMax(prediccion1);
+        int  vientoMedia1 = prediccion1.getPrediccion().getDia().get(0).getViento().get(0).getVelocidad();
+        int  vientoMax1 = getVientoMax(prediccion1);
+        int vientoMin1 = getVientoMin(prediccion1);
+        //int  vientoMin1 = getVientoMin(prediccion1);
+
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date fecha1 = new Date();
+        try {
+            fecha1 = dateFormat.parse(prediccion1.getPrediccion().getDia().get(0).getFecha());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+
+        myJsonTextView.append("Fecha de prediccion: " + fecha1.toString() + "\n");
+        myJsonTextView.append("Tmax en " + prediccion1.getNombre() + ": " + tmax1 + "ºC\n");
+        myJsonTextView.append("Tmin en " + prediccion1.getNombre() + ": " + tmin1 + "ºC\n");
+        myJsonTextView.append("Probabilidad de precipitación en " + prediccion1.getNombre() + ": " + probPrec1 + "%\n");
+        myJsonTextView.append("\n" + prediccion1.getPrediccion().getDia().get(1).getProbPrecipitacion().toString());
+        //myJsonTextView.append("Probabilidad de precipitación en " + prediccion1.getNombre() + ": " + probPrec1 + "%\n");
+        //myJsonTextView.append("Velocidad media de viento en " + prediccion1.getNombre() + ": " + vientoMedia1 + "km/h\n");
+        //myJsonTextView.append("Velocidad máxima de viento en " + prediccion1.getNombre() + ": " + vientoMax1 + "km/h\n");
+
+        //myJsonTextView.setText(prediccion.toString());
     }
 
-    private void getModel200()
-    {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
+    private int getVientoMax(PrediccionMunicipio prediccion){
+        List<Viento> vientoList = prediccion.getPrediccion().getDia().get(0).getViento();
+        int vientoMax = vientoList.get(0).getVelocidad();
 
-        //Se llama a la interfaz
-        JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
-        String url = "opendata/api/prediccion/especifica/municipio/diaria/" + "36039" + "/?api_key=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZHJpODZ2aWdvQGdtYWlsLmNvbSIsImp0aSI6IjJkNzgzYjhhLTFjMTUtNGJjNS04ZmJkLTMwZmY4NWM2NWUyNSIsImlzcyI6IkFFTUVUIiwiaWF0IjoxNjAzMDE5NTg0LCJ1c2VySWQiOiIyZDc4M2I4YS0xYzE1LTRiYzUtOGZiZC0zMGZmODVjNjVlMjUiLCJyb2xlIjoiIn0.a1IIOmDUM1FI6neNmgLeT728iLAKa26mxia-Oe5sOWs";
-
-        Call<Model200> call = jsonPlaceHolderApi.getModel200(url);
-        call.enqueue(new Callback<Model200>() {
-            @Override
-            public void onResponse(Call<Model200> call, Response<Model200> response) {
-                if(!response.isSuccessful()){
-
-                    System.out.println("Operacion 1 Incorrecta");
-                    myJsonTextView.setText("código: " + response.code());
-                    return;
-                }
-
-                getPrediction(response.body());
+        for(Viento viento : vientoList)
+        {
+            if (viento.getVelocidad() > vientoMax)
+            {
+                vientoMax = viento.getVelocidad();
             }
-
-            @Override
-            public void onFailure(Call<Model200> call, Throwable t) {
-
-            }
-        });
+        }
+        return vientoMax;
     }
 
-    //Método para traer los datos
-    private void getPrediction(Model200 model200){
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(baseUrl)
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        JsonPlaceHolderApi jsonPlaceHolderApi = retrofit.create(JsonPlaceHolderApi.class);
+    private int getVientoMin(PrediccionMunicipio prediccion) {
+        List<Viento> vientoList = prediccion.getPrediccion().getDia().get(0).getViento();
+        int vientoMin = vientoList.get(0).getVelocidad();
 
-        String url2 = model200.getDatos();
-        //System.out.println(url2);
-        url2 = url2.replace(baseUrl,"");
-        //System.out.println(url2);
-
-        Call<List<PrediccionMunicipio>> callPrediccion = jsonPlaceHolderApi.getPrediccion(url2);
-        callPrediccion.enqueue(new Callback<List<PrediccionMunicipio>>() {
-            @Override
-            public void onResponse(Call<List<PrediccionMunicipio>> call, Response<List<PrediccionMunicipio>> response) {
-                if(!response.isSuccessful()){
-
-                    System.out.println("Operacion Incorrecta");
-                    myJsonTextView.setText("código: " + response.code());
-                    return;
-                }
-
-                List<PrediccionMunicipio> prediccionMunicipioList = response.body();
-                for (PrediccionMunicipio prediccionMunicipio : prediccionMunicipioList) {
-                    String content = "";
-                    content += prediccionMunicipio.toString() + "\n\n";
-                    myJsonTextView.append(content);
-                }
+        for(Viento viento : vientoList)
+        {
+            if (viento.getVelocidad() < vientoMin)
+            {
+                vientoMin = viento.getVelocidad();
             }
+        }
+        return vientoMin;
+    }
 
-            @Override
-            public void onFailure(Call<List<PrediccionMunicipio>> call, Throwable t) {
+    private int getProbPrecMax(PrediccionMunicipio prediccion){
+        List<ProbPrecipitacion> probPrecipitacionList = prediccion.getPrediccion().getDia().get(0).getProbPrecipitacion();
+        int probPrecipitacion = probPrecipitacionList.get(0).getValue();
 
+        for(ProbPrecipitacion precipitacion : probPrecipitacionList)
+        {
+            if (precipitacion.getValue() > probPrecipitacion)
+            {
+                probPrecipitacion = precipitacion.getValue();
             }
-        });
+        }
+        return probPrecipitacion;
     }
 }

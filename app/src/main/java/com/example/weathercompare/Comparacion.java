@@ -1,8 +1,9 @@
 package com.example.weathercompare;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Comparacion {
+public class Comparacion implements Serializable {
     //Atributos
     private Date fecha;
     private Busqueda busqueda1;
