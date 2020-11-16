@@ -37,6 +37,9 @@ public class UsuarioActivity extends AppCompatActivity {
         bienvenida.setText(bienvenida.getText().toString() + "\n" + usuario.getNombre());
         //System.out.println(usuario.toString());
 
+        //Guardamos info de usuario utilizando la clase UsuarioHolder
+        UsuarioHolder.getInstance().setUsuarioLogueado(usuario);
+
         //Asociación botón layout
         buttonLogout = findViewById(R.id.button_logout);
         buttonLogout.setOnClickListener(new View.OnClickListener() {

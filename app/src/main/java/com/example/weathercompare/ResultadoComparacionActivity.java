@@ -70,22 +70,11 @@ public class ResultadoComparacionActivity extends AppCompatActivity {
         tvEstadoCielo1 = findViewById(R.id.tvEstadoCielo1);
         tvEstadoCielo2 = findViewById(R.id.tvEstadoCielo2);
 
-
-
-
-        //Enlace del atributo con el textView del layout
-        //myJsonTextView = findViewById(R.id.JsonTextView);
-
         //Paso del objeto prediccion desde la clase comparacion_activity
         PrediccionMunicipio prediccion1 = (PrediccionMunicipio) getIntent().getExtras().getSerializable("prediccionMunicipio1");
         PrediccionMunicipio prediccion2 = (PrediccionMunicipio) getIntent().getExtras().getSerializable("prediccionMunicipio2");
         //String prediccionProvincia = (String) getIntent().getExtras().getSerializable("prediccionMunicipio");
 
-        //myJsonTextView.append("Comparacion: " +
-          //      prediccion1.getProvincia() + "-" + prediccion1.getNombre() +
-            //    " vs " +
-              //  prediccion2.getProvincia() + "-" + prediccion2.getNombre() +
-                //"\n");
 
         //Obtencion de datos relevantes prediccion1
         int tmax1 = prediccion1.getPrediccion().getDia().get(1).getTemperatura().getMaxima();
@@ -116,7 +105,6 @@ public class ResultadoComparacionActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-
         tvFecha.setText(fecha1.toString());
         tvlocalidad1.setText(prediccion1.getNombre());
         tvlocalidad2.setText( prediccion2.getNombre());
@@ -135,18 +123,9 @@ public class ResultadoComparacionActivity extends AppCompatActivity {
         tvEstadoCielo1.setText(estadoCielo1);
         tvEstadoCielo2.setText(estadoCielo2);
 
-        /*myJsonTextView.append("Probabilidad de precipitación en " + prediccion1.getNombre() + ": " + probPrec1 + "%\n");
-        myJsonTextView.append("Estado del cielo en: " + prediccion1.getNombre() + ": " + estadoCielo1 + "\n");
-        myJsonTextView.append("Racha de viento en: " + prediccion1.getNombre() +": " + vientoMax1 + "km/h\n");
-        myJsonTextView.append("Velocidad media de viento en: " + prediccion1.getNombre() + ": " + vientoMedia1 + "km/h\n\n");
-
-        myJsonTextView.append("Tmax en " + prediccion2.getNombre() + ": " + tmax2 + "ºC\n");
-        myJsonTextView.append("Tmin en " + prediccion2.getNombre() + ": " + tmin2 + "ºC\n");
-        myJsonTextView.append("Tmed en " + prediccion2.getNombre() + ": " + tmed2 + "ºC\n");
-        myJsonTextView.append("Probabilidad de precipitación en " + prediccion2.getNombre() + ": " + probPrec2 + "%\n");
-        myJsonTextView.append("Estado del cielo en: " + prediccion2.getNombre() + ": " + estadoCielo2 + "\n");
-        myJsonTextView.append("Racha de viento en: " + prediccion2.getNombre() +": " + vientoMax2 + "km/h\n");
-        myJsonTextView.append("Velocidad media de viento en: " + prediccion2.getNombre() + ": " + vientoMedia2 + "km/h\n");*/
+        // Almacenamos informacion de la comparacion en la base de datos
+        // sabiendo quién es el usuario registrado
+        // System.out.println(UsuarioHolder.getInstance().getUsuarioLogueado().toString());
     }
 
     private int getVientoMax(PrediccionMunicipio prediccion){

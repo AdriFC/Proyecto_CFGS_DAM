@@ -46,7 +46,7 @@ public class Registro extends AppCompatActivity {
             if(validarContrasenia(contraseña.getText().toString())){
 
                 //Insección de usuario en la base de datos
-                if(bd.insertData(nombre.getText().toString(), email.getText().toString(), contraseña.getText().toString()) == true){
+                if(bd.insertDataUsuario(nombre.getText().toString(), email.getText().toString(), contraseña.getText().toString()) == true){
                     Toast.makeText(this, (R.string.toast_registroExito), Toast.LENGTH_SHORT).show();
                     startActivity(new Intent(Registro.this, Login.class));
                 }else{

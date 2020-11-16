@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -33,6 +34,29 @@ public class BaseDeDatos extends SQLiteOpenHelper {
 
         db.execSQL(createTable);
 
+        createTable = "CREATE TABLE  comparacion (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "user_id INTEGER," +
+                "fecha DATE, " +
+                "busqueda1_id INTEGER," +
+                "busqueda2_id INTEGER" +
+                ");";
+
+        db.execSQL(createTable);
+
+        createTable = "CREATE TABLE  busqueda (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "tmin FLOAT," +
+                "tmax FLOAT, " +
+                "tmed FLOAT," +
+                "probOfprec FLOAT, " +
+                "vmed FLOAT," +
+                "vracha FLOAT, " +
+                "fecha DATE, " +
+                "estadoCielo TEXT" +
+                ");";
+
+        db.execSQL(createTable);
     }
 
     //Método para actualizar, al extender de una clase abstracta es de obligada implementación por el usuario.
@@ -42,7 +66,7 @@ public class BaseDeDatos extends SQLiteOpenHelper {
     }
 
     //Función para insertar datos en la BBDD
-    public boolean insertData (String nombre, String email, String contraseña){
+    public boolean insertDataUsuario(String nombre, String email, String contraseña){
         SQLiteDatabase db = getWritableDatabase();
 
         //Comprobar que el email no ha sido registrado todavía en la base de datos
@@ -56,13 +80,33 @@ public class BaseDeDatos extends SQLiteOpenHelper {
             return false;
         }
 
-
-
         //Insertar datos de usuario
         String insert = "INSERT INTO usuario (nombre, email, contraseña) " +
                 "VALUES (\""+ nombre +"\" , \""+ email + "\" , \""+ contraseña + "\" );";
         db.execSQL(insert);
         db.close();
+
+        return true;
+    }
+
+    public boolean insertDataBusqueda(int id, float tempMind, float tempMax, float tempMed, float vientoMed,
+                                      float vientoRacha, float precipitaciones, String estadoCielo, Date fecha){
+        SQLiteDatabase db = getWritableDatabase();
+        //Insertar datos de la búsqueda
+        String insert = "INSERT INTO busqueda (tmin, tmax, tmed, probOfprec, vmed, vracha, fecha, estadoCielo) " +
+                "VALUES (\""+ tempMind +"\" , \""+ tempMax + "\" , \""+ tempMed + "\" , \""+precipitaciones + "\"" + vientoMed +
+                        "\""+ vientoRacha + "\"" + fecha + "\"" + estadoCielo + "\");";
+        db.execSQL(insert);
+
+        return true;
+    }
+
+    public boolean insertDataComparacion(int user_id, Date fecha, Busqueda busqueda1_id, Busqueda busqueda2_id){
+        SQLiteDatabase db = getWritableDatabase();
+        //Insertar datos de la comparación
+        String insert = "INSERT INTO comparacion (user_id, fecha, busqueda1_id, busqueda2_id) " +
+                "VALUES (\""+ user_id +"\" , \""+ fecha + "\" , \""+ busqueda1_id + "\" , \""+busqueda2_id + "\");";
+        db.execSQL(insert);
 
         return true;
     }
