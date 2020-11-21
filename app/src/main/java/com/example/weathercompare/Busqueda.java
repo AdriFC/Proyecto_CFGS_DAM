@@ -6,6 +6,7 @@ public class Busqueda {
     //Atributos
     private int id;
     private String ubicacion;
+    private String provincia;
     private Date fecha;
     private float tempMin;
     private float tempMax;
@@ -17,9 +18,10 @@ public class Busqueda {
 
 
     //Constructor
-    public Busqueda(int id, String ubicacion, Date fecha, float tempMin, float tempMax, float tempMedia, float vientoMedia, float vientoRacha, float precipitaciones, String estadoCielo) {
+    public Busqueda(int id, String ubicacion, String provincia, Date fecha, float tempMin, float tempMax, float tempMedia, float vientoMedia, float vientoRacha, float precipitaciones, String estadoCielo) {
         this.id = id;
         this.ubicacion = ubicacion;
+        this.provincia = provincia;
         this.fecha = fecha;
         this.tempMin = tempMin;
         this.tempMax = tempMax;
@@ -34,6 +36,7 @@ public class Busqueda {
     public Busqueda() {
         this.id = 0;
         this.ubicacion = "";
+        this.provincia = "";
         this.fecha = new Date();
         this.tempMin = 0;
         this.tempMax = 0;
@@ -60,6 +63,10 @@ public class Busqueda {
     public void setUbicacion(String ubicacion) {
         this.ubicacion = ubicacion;
     }
+
+    public String getProvincia() { return provincia; }
+
+    public void setProvincia(String provincia) { this.provincia = provincia; }
 
     public Date getFecha() {
         return fecha;
@@ -131,6 +138,7 @@ public class Busqueda {
         return "Busqueda{" +
                 "id=" + id +
                 ", ubicacion='" + ubicacion + '\'' +
+                ", provincia='" + provincia + '\'' +
                 ", fecha=" + fecha +
                 ", tempMin=" + tempMin +
                 ", tempMax=" + tempMax +

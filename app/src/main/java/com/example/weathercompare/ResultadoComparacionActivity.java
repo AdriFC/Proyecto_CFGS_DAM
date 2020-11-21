@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -75,7 +76,6 @@ public class ResultadoComparacionActivity extends AppCompatActivity {
         PrediccionMunicipio prediccion2 = (PrediccionMunicipio) getIntent().getExtras().getSerializable("prediccionMunicipio2");
         //String prediccionProvincia = (String) getIntent().getExtras().getSerializable("prediccionMunicipio");
 
-
         //Obtencion de datos relevantes prediccion1
         int tmax1 = prediccion1.getPrediccion().getDia().get(1).getTemperatura().getMaxima();
         int tmin1 = prediccion1.getPrediccion().getDia().get(1).getTemperatura().getMinima();
@@ -85,6 +85,8 @@ public class ResultadoComparacionActivity extends AppCompatActivity {
         int vientoMax1 = getVientoMax(prediccion1);
         int vientoMin1 = getVientoMin(prediccion1);
         String estadoCielo1 = prediccion1.getPrediccion().getDia().get(1).getEstadoCielo().get(0).getDescripcion();
+        String municipio1 = prediccion1.getNombre();
+        String provincia1 = prediccion1.getProvincia();
 
         //Obtencion de datos relevantes prediccion2
         int tmax2 = prediccion2.getPrediccion().getDia().get(1).getTemperatura().getMaxima();
@@ -95,7 +97,8 @@ public class ResultadoComparacionActivity extends AppCompatActivity {
         int vientoMax2 = getVientoMax(prediccion2);
         int vientoMin2 = getVientoMin(prediccion2);
         String estadoCielo2 = prediccion2.getPrediccion().getDia().get(1).getEstadoCielo().get(0).getDescripcion();
-
+        String municipio2 = prediccion2.getNombre();
+        String provincia2 = prediccion2.getProvincia();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date fecha1 = new Date();
@@ -104,6 +107,8 @@ public class ResultadoComparacionActivity extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
+
+        Date fechaComparacion = Calendar.getInstance().getTime();
 
         tvFecha.setText(fecha1.toString());
         tvlocalidad1.setText(prediccion1.getNombre());
@@ -126,6 +131,28 @@ public class ResultadoComparacionActivity extends AppCompatActivity {
         // Almacenamos informacion de la comparacion en la base de datos
         // sabiendo quién es el usuario registrado
         // System.out.println(UsuarioHolder.getInstance().getUsuarioLogueado().toString());
+
+        // Construimos objetos Busqueda1 y Busqueda2
+        Busqueda busqueda1 = new Busqueda(0, municipio1, provincia1, fecha1, tmin1, tmax1, tmed1, vientoMedia1, vientoMax1, probPrec1, estadoCielo1);
+        Busqueda busqueda2 = new Busqueda(0, municipio2, provincia2, fecha1, tmin2, tmax2, tmed2, vientoMedia2, vientoMax2, probPrec2, estadoCielo2);
+
+        // Instanciamos la base de datos
+        BaseDeDatos bd = new BaseDeDatos(this, "android", null, 1);
+
+        //Usamos el metodo de insertar una comparacion
+        bd.insertDataComparacion(
+                UsuarioHolder.getInstance().getUsuarioLogueado().getId(),   //user_id
+                fechaComparacion,                                           //fecha
+                busqueda1,                                                  //busqueda1
+                busqueda2);                                                 //busqueda2
+
+        List<Comparacion> comparacionList = bd.getDataComparacion(UsuarioHolder.getInstance().getUsuarioLogueado().getId());
+
+        // Mostramos todas las comparaciones del usuario logueado
+        for (Comparacion comparacion : comparacionList)
+        {
+            System.out.println("Comparacion: " + comparacion.toString());
+        }
     }
 
     private int getVientoMax(PrediccionMunicipio prediccion){
