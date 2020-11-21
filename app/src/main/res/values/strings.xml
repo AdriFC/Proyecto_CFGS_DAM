@@ -37,4 +37,7 @@
     <string name="TextVMed">Viento media</string>
     <string name="TextPrec">% Precipitación</string>
     <string name="TextEstadoCielo">Estado cielo</string>
+    <string name="TextHistorial">Tu historial</string>
+    <string name="toast_historial">Revisa tu historial</string>
+    <string name="toast_Compara">Compara el clima</string>
 </resources>

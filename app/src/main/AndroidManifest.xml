@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Comparacion_activity"></activity>
+        <activity android:name=".HistorialActivity"></activity>
+        <activity android:name=".ResultadoHistorial"></activity>
+        <activity android:name=".Comparacion_activity" />
         <activity android:name=".ResultadoComparacionActivity" />
         <activity android:name=".UsuarioActivity" />
         <activity android:name=".Login" />

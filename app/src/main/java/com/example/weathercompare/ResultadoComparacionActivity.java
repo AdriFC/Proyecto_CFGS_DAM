@@ -100,17 +100,21 @@ public class ResultadoComparacionActivity extends AppCompatActivity {
         String municipio2 = prediccion2.getNombre();
         String provincia2 = prediccion2.getProvincia();
 
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date fecha1 = new Date();
         try {
-            fecha1 = dateFormat.parse(prediccion1.getPrediccion().getDia().get(1).getFecha());
+            fecha1 = dateFormat1.parse(prediccion1.getPrediccion().getDia().get(1).getFecha());
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
         Date fechaComparacion = Calendar.getInstance().getTime();
 
-        tvFecha.setText(fecha1.toString());
+        System.out.println(fechaComparacion.toString());
+
+        SimpleDateFormat dateFormat2 = new SimpleDateFormat("dd/MM/yyyy");
+
+        tvFecha.setText("Predicciones para el día " + dateFormat2.format(fecha1));
         tvlocalidad1.setText(prediccion1.getNombre());
         tvlocalidad2.setText( prediccion2.getNombre());
         tvTempMax1.setText(""+tmax1+"°C");
@@ -145,14 +149,6 @@ public class ResultadoComparacionActivity extends AppCompatActivity {
                 fechaComparacion,                                           //fecha
                 busqueda1,                                                  //busqueda1
                 busqueda2);                                                 //busqueda2
-
-        List<Comparacion> comparacionList = bd.getDataComparacion(UsuarioHolder.getInstance().getUsuarioLogueado().getId());
-
-        // Mostramos todas las comparaciones del usuario logueado
-        for (Comparacion comparacion : comparacionList)
-        {
-            System.out.println("Comparacion: " + comparacion.toString());
-        }
     }
 
     private int getVientoMax(PrediccionMunicipio prediccion){

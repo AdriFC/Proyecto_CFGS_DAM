@@ -15,6 +15,7 @@ public class UsuarioActivity extends AppCompatActivity {
     TextView bienvenida;
     Button buttonLogout;
     Button buttonComparar;
+    Button buttonHistorial;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,20 @@ public class UsuarioActivity extends AppCompatActivity {
         //Guardamos info de usuario utilizando la clase UsuarioHolder
         UsuarioHolder.getInstance().setUsuarioLogueado(usuario);
 
-        //Asociación botón layout
+        //Asociación botón historial layout
+        buttonHistorial = findViewById(R.id.button_historial);
+        buttonHistorial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Lanzamiento de activity para comprobar el historial de comparaciones
+                Toast.makeText(UsuarioActivity.this,getString(R.string.toast_historial),Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(UsuarioActivity.this, HistorialActivity.class));
+                finish();
+
+            }
+        });
+
+        //Asociación botón logout layout
         buttonLogout = findViewById(R.id.button_logout);
         buttonLogout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,7 +71,7 @@ public class UsuarioActivity extends AppCompatActivity {
 
     //Función que se ejecuta al pulsar el botón de comparar!
     public void funcionComparar (View v){
-        Toast.makeText(UsuarioActivity.this,"prueba",Toast.LENGTH_SHORT).show();
+        Toast.makeText(UsuarioActivity.this,getString(R.string.toast_Compara),Toast.LENGTH_SHORT).show();
         startActivity(new Intent(UsuarioActivity.this, Comparacion_activity.class));
     }
 }

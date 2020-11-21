@@ -97,9 +97,12 @@ public class BaseDeDatos extends SQLiteOpenHelper {
                                       Date fecha, String municipio, String provincia){
         SQLiteDatabase db = getWritableDatabase();
         //Insertar datos de la búsqueda
+
+        System.out.println("Insertando busqueda con fecha: " + fecha.toString());
+
         String insert = "INSERT INTO busqueda (tmin, tmax, tmed, probOfprec, vmed, vracha, fecha, estadoCielo, municipio, provincia) " +
                 "VALUES (\""+ tempMin +"\" , \""+ tempMax + "\" , \""+ tempMed + "\" , \""+precipitaciones + "\", \"" +
-                        vientoMed + "\", \"" + vientoRacha + "\" , \"" + fecha + "\" , \"" + estadoCielo +
+                        vientoMed + "\", \"" + vientoRacha + "\" , \"" + fecha.getTime() + "\" , \"" + estadoCielo +
                         "\", \"" + municipio + "\", \"" + provincia +"\")";
         db.execSQL(insert);
 
@@ -148,8 +151,10 @@ public class BaseDeDatos extends SQLiteOpenHelper {
         );
 
         //Insertar datos de la comparación en la tabla comparacion
+
+        System.out.println("Insertando comparacion con fecha " + fecha.toString());
         String insert = "INSERT INTO comparacion (user_id, fecha, busqueda1_id, busqueda2_id) " +
-                "VALUES (\""+ user_id +"\" , \""+ fecha + "\" , \""+ id1 + "\" , \""+ id2 + "\");";
+                "VALUES (\""+ user_id +"\" , \""+ fecha.getTime() + "\" , \""+ id1 + "\" , \""+ id2 + "\");";
         db.execSQL(insert);
 
         db.close();
@@ -195,6 +200,8 @@ public class BaseDeDatos extends SQLiteOpenHelper {
             return new Busqueda();
         }
 
+        System.out.println("Recuperando busqueda con fecha " + cursor.getLong(7));
+
         Busqueda busqueda = new Busqueda(
                 cursor.getInt(0),               // id
                 cursor.getString(9),           // Ubicacion
@@ -220,30 +227,32 @@ public class BaseDeDatos extends SQLiteOpenHelper {
         Cursor cursor = lectura.rawQuery (query, null);
         cursor.moveToFirst();
         List<Comparacion> comparacionList = new ArrayList<>();
-        do{
-            System.out.println("Comparacion ID " +
-                    cursor.getInt(0) +
-                    " entre busqueda:" +
-                    cursor.getInt(3) +
-                    " y" +
-                    cursor.getInt(4) +
-                    "\n" );
 
-            //Buscamos la info de cada una de las busquedas, dado su id
-            Busqueda busqueda1 = getDataBusqueda(cursor.getInt(3));
-            Busqueda busqueda2 = getDataBusqueda(cursor.getInt(4));
+        if (cursor.getCount() > 0) {
+            do {
+                System.out.println("Comparacion ID " +
+                        cursor.getInt(0) +
+                        " entre busqueda:" +
+                        cursor.getInt(3) +
+                        " y" +
+                        cursor.getInt(4) +
+                        "\n");
 
-            // Comprobamos si ha habido algun problema con las busquedas
-            if(busqueda1.getId() != 0 && busqueda2.getId() != 0) {
-                System.out.println("Datos busqueda 1: \n " + busqueda1.toString() + "\nDatos busqueda 2: \n " + busqueda2.toString());
+                //Buscamos la info de cada una de las busquedas, dado su id
+                Busqueda busqueda1 = getDataBusqueda(cursor.getInt(3));
+                Busqueda busqueda2 = getDataBusqueda(cursor.getInt(4));
 
-                comparacionList.add(new Comparacion(new Date(cursor.getLong(3)), busqueda1, busqueda2));
-            } else {
-                System.out.println("Ha habido algun problema con alguna de las busquedas \n");
-            }
+                // Comprobamos si ha habido algun problema con las busquedas
+                if (busqueda1.getId() != 0 && busqueda2.getId() != 0) {
+                    System.out.println("Datos busqueda 1: \n " + busqueda1.toString() + "\nDatos busqueda 2: \n " + busqueda2.toString());
 
-        } while (cursor.moveToNext()) ;
+                    comparacionList.add(new Comparacion(new Date(cursor.getLong(2)), busqueda1, busqueda2));
+                } else {
+                    System.out.println("Ha habido algun problema con alguna de las busquedas \n");
+                }
 
+            } while (cursor.moveToNext());
+        }
         lectura.close();
 
         return comparacionList;
